@@ -15,7 +15,7 @@ import pandas as pd
 # 变异，随机交换一个种群的两个点（所以概率提高一点
 
 class GaMap:
-    def __init__(self, points, no_bound, DNA_SIZE=None, cross_rate=0.8, mutation=0.03, pop_size=100):
+    def __init__(self, points, no_bound, DNA_SIZE=None, cross_rate=0.8, mutation=0.1, pop_size=100):
         self.cross_rate = cross_rate  # 杂交率
         self.mutation = mutation  # 变异率
         self.points = np.array(points)  # 点
@@ -65,6 +65,7 @@ class GaMap:
             index += 1
 
         return 100/fitness
+        # return pow(100/fitness, 2)
 
     # 自然选择
     def select(self):
@@ -150,6 +151,9 @@ class GaMap:
             if np.random.rand() < self.mutation:
                 change = random.sample(range(people.shape[0]), 2)  # 生成两个要交换的数
                 people[change[0]], people[change[1]] = people[change[1]], people[change[0]]  # 交换
+                # temp = people[change[0]]
+                # np.delete(people, change[0], 0)
+                # np.insert(people, change[1], temp, 0)
 
     # 进化
     def evolution(self):
@@ -180,7 +184,8 @@ class GaMap:
         fitness = self.get_fitness()
         maxindex = np.argmax(fitness)
         print(self.pop[maxindex])
-        print(fitness[maxindex])
+        print(fitness)
+        print(100/fitness[maxindex])
         plot_x = []
         plot_y = []
 
@@ -199,7 +204,7 @@ class GaMap:
 
 
 # 旅行者路径：起点和终点要一样
-point = np.array([[1, 1], [1, 7], [5, 2], [6, 4], [2, 3], [1, 1]])
+point = np.array([[1, 1], [1, 7], [5, 2], [6, 4], [2, 3], [7, 4], [5, 1], [6, 2], [8, 9], [4, 7], [1, 1]])
 begin = time()
 ga = GaMap(point, 0)
 ga.start()
