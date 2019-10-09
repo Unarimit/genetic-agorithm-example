@@ -1,9 +1,7 @@
 import numpy as np
 import random
 from time import time
-import matplotlib
 import matplotlib.pyplot as plt
-import pandas as pd
 
 
 # 旅行商问题：从原点出发遍历所有点再回到原点，使距离最短
@@ -15,7 +13,8 @@ import pandas as pd
 # 变异，随机交换一个种群的两个点（所以概率提高一点
 
 class GaMap:
-    def __init__(self, points, no_bound, DNA_SIZE=None, cross_rate=0.8, mutation=0.1, pop_size=100):
+    # 由于采用了比较激进的杂交策略（不保留父代），所以遗传率取0.3（正常是0.6-1之间
+    def __init__(self, points, no_bound, DNA_SIZE=None, cross_rate=0.3, mutation=0.1, pop_size=100):
         self.cross_rate = cross_rate  # 杂交率
         self.mutation = mutation  # 变异率
         self.points = np.array(points)  # 点
@@ -55,7 +54,7 @@ class GaMap:
         fitness = np.zeros(self.pop_size)
         index = 0
 
-        for people in self.pop:
+        for people in self.pop:  # 遍历种群
             for i in range(people.shape[0]):
                 if i == 0:
                     fitness[index] += self.distance[0][people[i]]
@@ -69,7 +68,9 @@ class GaMap:
 
     # 自然选择
     def select(self):
-        fitness = self.get_fitness()  # 说明见GA
+        fitness = self.get_fitness()
+        # numpy.random.choice是numpy中的随机抽取函数，可以对序列中的元素进行随机抽取，第一个参数为待抽取序列，
+        # size参数为抽取的数量，replace参数为是否允许重复，p一个列表，列表中的每个元素为第一个参数序列中每个参数被选中的概率
         self.pop = self.pop[np.random.choice(np.arange(self.pop.shape[0]), size=self.pop.shape[0], replace=True,
                                              p=fitness / np.sum(fitness))]
 
