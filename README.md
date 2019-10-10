@@ -1,5 +1,5 @@
 # genetic agorithm example
- 一个用于解决TSP的遗传算法示例，~~主要用于辅助演讲产生某种节目效果~~
+ 一个用于解决TSP的遗传算法示例，~~主要用于辅助演讲产生某种节目效果~~（别真三连啊
 
  just for presentation.
 
